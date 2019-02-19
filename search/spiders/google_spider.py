@@ -37,7 +37,7 @@ class GoogleSpider(scrapy.Spider):
         related = response.xpath('//div[@class="card-section"]')
         print(related)
 
-        item = GoogleItem(keywords=self.kw, page_num=self.pn)
+        item = GoogleItem(keyword=self.kw, page_num=self.pn)
         item['result'] = result
         item['related'] = related
 
