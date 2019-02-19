@@ -4,6 +4,7 @@
 import scrapy
 
 from search.settings import DEFAULT_REQUEST_HEADERS
+from search.items import GoogleItem
 
 
 class GoogleSpider(scrapy.Spider):
@@ -31,9 +32,13 @@ class GoogleSpider(scrapy.Spider):
                 )
 
     def parse(self, response):
-        results = response.xpath('//div[@class="rc"]').getall()
-        print(results)
-        # for result in results:
-        #    print(result)
+        result = response.xpath('//div[@class="srg"]')
+        print(result)
         related = response.xpath('//div[@class="card-section"]')
         print(related)
+
+        item = GoogleItem(keywords=self.kw, page_num=self.pn)
+        item['result'] = result
+        item['related'] = related
+
+        yield item
