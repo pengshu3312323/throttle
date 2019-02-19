@@ -32,9 +32,9 @@ class GoogleSpider(scrapy.Spider):
                 )
 
     def parse(self, response):
-        result = response.xpath('//div[@class="srg"]')
+        result = response.xpath('//div[@class="srg"]').get()
         print(result)
-        related = response.xpath('//div[@class="card-section"]')
+        related = response.xpath('//div[@class="card-section"]').get()
         print(related)
 
         item = GoogleItem(keyword=self.kw, page_num=self.pn)
