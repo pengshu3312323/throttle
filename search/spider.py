@@ -27,17 +27,18 @@ class GoogleSpider:
         results = selector.xpath('//div[@class="rc"]')
         item_list = []
         for res in results:
-            title = res.xpath('//h3[@class="LC20lb"]').get()
-            source = res.xpath('//cite[@class="iUh30"]').get()
-            des = res.xpath('//span[@class="st"]').get()
+            title = res.xpath('//h3[@class="LC20lb"]')
+            print(title)
+            # source = res.xpath('//cite[@class="iUh30"]').get()
+            # des = res.xpath('//span[@class="st"]').get()
             item = dict(
                 search_type='google',
                 keyword=keyword,
                 page_num=pn
                 )
             item['title'] = title
-            item['source'] = source
-            item['des'] = des
+            # item['source'] = source
+            # item['des'] = des
 
             item_list.append(item)
         return item_list
