@@ -67,7 +67,7 @@ SPIDER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'search.pipelines.GooglePipeline': 300,
+    'search.pipelines.SearchPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

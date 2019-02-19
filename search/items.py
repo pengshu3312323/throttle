@@ -8,14 +8,10 @@
 import scrapy
 
 
-class BaiduItem(scrapy.Item):
-    title = scrapy.Field()   # 标题
-    des = scrapy.Field()     # 描述
-    source = scrapy.Field()  # 来源
-
-
-class GoogleItem(scrapy.Item):
-    keyword = scrapy.Field()   # 关键字
+class SearchItem(scrapy.Item):
+    search_type = scrapy.Field()  # 搜索方式 百度还是谷歌
+    keyword = scrapy.Field()  # 关键字
     page_num = scrapy.Field()  # 搜索页码
-    result = scrapy.Field()    # 单页所有的结果
-    related = scrapy.Field()   # 相关搜索
+    title = scrapy.Field()  # 标题
+    des = scrapy.Field()   # 描述
+    source = scrapy.Field()  # 来源

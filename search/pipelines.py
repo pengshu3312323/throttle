@@ -9,7 +9,7 @@ import time
 import json
 
 
-class GooglePipeline:
+class SearchPipeline:
     def __init__(self):
         now = int(time.time())
         file_name = 'google_{}.json'.format(now)
