@@ -23,7 +23,7 @@ class GoogleSpider:
             headers=self.header
             )
 
-        selector = etree.HTML(res)
+        selector = etree.HTML(res.text)
         results = selector.xpath('//div[@class="rc"]')
         item_list = []
         for res in results:
