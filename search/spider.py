@@ -24,21 +24,20 @@ class GoogleSpider:
             )
 
         selector = etree.HTML(res.text)
-        results = selector.xpath('//div[@class="rc"]')
+        # results = selector.xpath('//div[@class="rc"]')
         item_list = []
-        for res in results:
-            title = res.xpath('//h3[@class="LC20lb"]')
-            print(title)
-            # source = res.xpath('//cite[@class="iUh30"]').get()
-            # des = res.xpath('//span[@class="st"]').get()
+        titles = selector.xpath('//h3[@class="LC20lb"]')
+        sources = selector.xpath('//cite[@class="iUh30"]')
+        dess = selector.xpath('//span[@class="st"]')
+        for t, s, d in zip(titles, sources, dess):
             item = dict(
                 search_type='google',
                 keyword=keyword,
                 page_num=pn
                 )
-            item['title'] = title
-            # item['source'] = source
-            # item['des'] = des
+            item['title'] = t
+            item['source'] = s
+            item['des'] = d
 
             item_list.append(item)
         return item_list
