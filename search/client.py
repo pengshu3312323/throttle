@@ -65,7 +65,7 @@ class SearchClient(RabbitMQBase):
                 print('Response timeout')
                 return 0
         print('Received response : {}'.format(self.response))
-        return 1
+        return self.response
 
     def build_msg(self, keyword, pn):
         # 拼装搜索关键字和页码

@@ -18,4 +18,3 @@ class RabbitMQBase:
             )
         )
         self.channel = self.connection.channel()
-    
