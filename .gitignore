@@ -2,3 +2,8 @@ __pycache__/
 */__pycache__/
 */*/__pycache__/
 *.json
+.pytest_cache/
+*.log
+*/*.log
+settings.py.bak
+*/settings.py.bak

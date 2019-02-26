@@ -6,7 +6,7 @@ import json
 import requests
 from lxml import etree
 
-from search.settings import DEFAULT_REQUEST_HEADERS
+from throttle.settings import DEFAULT_REQUEST_HEADERS
 
 
 class GoogleSpider:
@@ -16,14 +16,14 @@ class GoogleSpider:
         self.header = DEFAULT_REQUEST_HEADERS
 
     def start_requests(self, keyword, pn=0):
-        res = {
+        data = {
             'success': False,
             'data': '',
         }
 
         if not keyword:
             # 当关键字为空时，直接失败
-            return json.dumps(res)
+            return json.dumps(data)
 
         url = 'https://www.google.com/search?q={}&start={}0'.format(
             keyword, pn
@@ -38,10 +38,10 @@ class GoogleSpider:
         item_list = []
 
         if not results:
-            return json.dumps(res)
+            return json.dumps(data)
 
-        for res in results:
-            res_str = etree.tostring(res)
+        for result in results:
+            res_str = etree.tostring(result)
             res_selector = etree.HTML(res_str)
             title = res_selector.xpath('//h3[@class="LC20lb"]/text()')[0]
             source = res_selector.xpath('//div[@class="r"]/a/@href')[0]
@@ -57,7 +57,7 @@ class GoogleSpider:
 
             item_list.append(item)
 
-        res['success'] = True
-        res['data'] = item_list
+        data['success'] = True
+        data['data'] = item_list
 
-        return json.dumps(res)
+        return json.dumps(data)

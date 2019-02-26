@@ -6,8 +6,8 @@ import json
 
 import pika
 
-from search.settings import RABBITMQ, RABBITMQ_RESPONSE_TIMEOUT
-from search.base import RabbitMQBase
+from throttle.settings import RABBITMQ, RABBITMQ_RESPONSE_TIMEOUT
+from throttle.base import RabbitMQBase
 
 
 class SearchClient(RabbitMQBase):
@@ -65,7 +65,7 @@ class SearchClient(RabbitMQBase):
                 print('Response timeout')
                 return 0
         print('Received response : {}'.format(self.response))
-        return 1
+        return self.response
 
     def build_msg(self, keyword, pn):
         # 拼装搜索关键字和页码
