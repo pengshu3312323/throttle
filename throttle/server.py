@@ -45,9 +45,9 @@ class SearchServer(RabbitMQBase):
         keyword = body.get('keyword', '')
         pn = body.get('pn', 0)
 
-        # res = self.spider_start(keyword, pn)
-        self.raise_exception(keyword)  # 供测试用
-        res = self.work_simulation(keyword, pn)  # 供测试用
+        res = self.spider_start(keyword, pn)
+        # self.raise_exception(keyword)  # 供测试用
+        # res = self.work_simulation(keyword, pn)  # 供测试用
 
         # 发送结果到响应队列 exchange和接收的不同
         ch.basic_publish(
