@@ -5,3 +5,5 @@ __pycache__/
 .pytest_cache/
 *.log
 */*.log
+settings.py.bak
+*/settings.py.bak

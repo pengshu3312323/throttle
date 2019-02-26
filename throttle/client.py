@@ -6,8 +6,8 @@ import json
 
 import pika
 
-from search.settings import RABBITMQ, RABBITMQ_RESPONSE_TIMEOUT
-from search.base import RabbitMQBase
+from throttle.settings import RABBITMQ, RABBITMQ_RESPONSE_TIMEOUT
+from throttle.base import RabbitMQBase
 
 
 class SearchClient(RabbitMQBase):

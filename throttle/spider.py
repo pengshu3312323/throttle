@@ -6,7 +6,7 @@ import json
 import requests
 from lxml import etree
 
-from search.settings import DEFAULT_REQUEST_HEADERS
+from throttle.settings import DEFAULT_REQUEST_HEADERS
 
 
 class GoogleSpider:

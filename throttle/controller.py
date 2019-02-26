@@ -1,36 +1,27 @@
+#! /usr/bin/env python3
+import os
+import sys
 
-import time
-import logging
-import logging.handlers
-import traceback
+BASE_DIR = os.path.dirname(os.path.dirname(__name__))
+sys.path.append(BASE_DIR)
+
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from search.server import SearchServer
-from search import settings
-
-logger = logging.getLogger('error')
-logger.setLevel(logging.ERROR)
-
-logging.basicConfig(datefmt=settings.LOG_DATE_FORMAT)
-
-handler = logging.handlers.RotatingFileHandler(
-    settings.LOG_FILE_NAME,
-    maxBytes=1024 * 1024,
-    backupCount=5
-    )
-handler.setFormatter(logging.Formatter(settings.LOG_FORMAT))
-
-logger.addHandler(handler)
+from throttle.server import SearchServer
+from throttle.log import logger
 
 
 class SearchServerController:
+    '''
+    Control the consumer(server)
+    '''
     def __new__(cls, *args, **kwargs):
         '''singleton'''
         if not hasattr(cls, '_instance'):
             cls._instance = super().__new__(cls)
         return cls._instance
 
-    def __init__(self, worker_num=10):
+    def __init__(self, worker_num=6):
         self._server_started = False
         self.worker_num = int(worker_num)
         self.thread_pool = ThreadPoolExecutor(max_workers=self.worker_num)
@@ -59,3 +50,8 @@ class SearchServerController:
                 logger.error(e, exc_info=True)
                 self.thread_pool.submit(self._start_a_worker)
                 print('Worker restarted')
+
+
+if __name__ == '__main__':
+    c = SearchServerController()
+    c.start()

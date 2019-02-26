@@ -1,7 +1,7 @@
 
 import pika
 
-from search.settings import RABBITMQ
+from throttle.settings import RABBITMQ
 
 
 class RabbitMQBase:
