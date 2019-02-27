@@ -15,17 +15,17 @@ DEFAULT_REQUEST_HEADERS = {
 
 if DEBUG:
     RABBITMQ = {
-        'host': 'localhost',
-        'port': 5672,
-        'username': 'pencil',
-        'password': 'hummel165'
+        'host': 'host',
+        'port': 1234,
+        'username': 'username',
+        'password': 'password'
     }
 else:
     RABBITMQ = {
-        'host': '172.17.0.1',
-        'port': 5672,
-        'username': 'pencil',
-        'password': 'hummel165'
+        'host': 'host',
+        'port': 4321,
+        'username': 'username',
+        'password': 'password'
     }
 
 # 生产者等待响应超时时间
@@ -39,13 +39,13 @@ LOG_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 # redis
 if DEBUG:
     REDIS = {
-      'host': '127.0.0.1',
-      'port': 6879,
-      'password': 'hummel165',
+      'host': 'host',
+      'port': 1234,
+      'password': 'password',
     }
 else:
     REDIS = {
-        'host': '172.17.0.1',
-        'port': 6879,
-        'password': 'hummel165',
+        'host': 'host',
+        'port': 1234,
+        'password': 'password',
     }
