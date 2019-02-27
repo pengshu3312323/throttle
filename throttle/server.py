@@ -6,12 +6,16 @@ import json
 
 import pika
 
-from search.settings import RABBITMQ
-from search.base import RabbitMQBase
-from search.spider import GoogleSpider
+from throttle.base import RabbitMQBase
+from throttle.spider import GoogleSpider
+from throttle.cache import cache_control
 
 
 class SearchServer(RabbitMQBase):
+    '''
+    一个 RabbitMQ 消费者
+    RPC 服务器端
+    '''
     def __init__(self):
         self._connect()
         # 声明 exchange 和 queue
@@ -19,7 +23,7 @@ class SearchServer(RabbitMQBase):
             exchange='search',
             exchange_type='direct'
         )
-        self.queue = self.channel.queue_declare()
+        self.queue = self.channel.queue_declare(queue='keywords')
 
     def google_consume(self):
         # 绑定到键为 google 的队列
@@ -37,12 +41,13 @@ class SearchServer(RabbitMQBase):
 
     def google_handler(self, ch, method, properties, body):
         # 处理收到的body
-        print(type(body), body)
         body = json.loads(body)
         keyword = body.get('keyword', '')
         pn = body.get('pn', 0)
 
         res = self.spider_start(keyword, pn)
+        # self.raise_exception(keyword)  # 供测试用
+        # res = self.work_simulation(keyword, pn)  # 供测试用
 
         # 发送结果到响应队列 exchange和接收的不同
         ch.basic_publish(
@@ -55,16 +60,27 @@ class SearchServer(RabbitMQBase):
             )
         # 消息确认
         ch.basic_ack(delivery_tag=method.delivery_tag)
-        print('Web search finished')
+        print('{} Web search finished'.format(id(self)))
+        return str(res)
 
-    def work_simulation(self):
+    @cache_control(100)
+    def work_simulation(self, keyword, pn):
         # 模拟爬取
-        time_used = random.randint(1, 5)
+        print('Working')
+        time_used = random.randint(1, 3)
         time.sleep(time_used)
-        return time_used
+        return '{}+{},time used {}'.format(keyword, pn, time_used)
 
+    @cache_control(100)
     def spider_start(self, keyword, pn):
-
         # 返回 爬取结果，json格式
         s = GoogleSpider()
         return s.start_requests(keyword, pn)
+
+    def raise_exception(self, keyword):
+        if keyword == 'exception':
+            raise ValueError('异常来了')
+
+    def close(self):
+        self.connection.close()
+        print('Connection closed')
