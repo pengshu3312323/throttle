@@ -56,7 +56,7 @@ class SearchServer(RabbitMQBase):
             properties=pika.BasicProperties(
                 correlation_id=properties.correlation_id
                 ),
-            body=str(res)
+            body=res
             )
         # 消息确认
         ch.basic_ack(delivery_tag=method.delivery_tag)
