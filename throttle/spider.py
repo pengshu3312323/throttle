@@ -33,7 +33,7 @@ class GoogleSpider:
             headers=self.header
             )
 
-        selector = etree.HTML(res.text)
+        selector = etree.HTML(str(res.content, 'utf-8'))
         results = selector.xpath('//div[@class="rc"]')
         item_list = []
 
@@ -53,7 +53,7 @@ class GoogleSpider:
             item['page_num'] = pn
             item['title'] = title if title else ''
             item['source'] = source if source else ''
-            item['des'] = str(etree.tostring(des)) if des else ''
+            item['des'] = etree.tostring(des).decode(encoding='utf-8') if des else ''
 
             item_list.append(item)
 

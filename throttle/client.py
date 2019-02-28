@@ -79,7 +79,7 @@ class SearchClient(RabbitMQBase):
         # 响应处理
         if self.corr_id == properties.correlation_id:
             # 响应匹配
-            self.response = str(body)
+            self.response = body.decode(encoding='utf-8')
 
     def close(self):
         self.connection.close()
