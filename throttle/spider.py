@@ -15,6 +15,21 @@ class GoogleSpider:
         DEFAULT_REQUEST_HEADERS['Referer'] = 'https://www.google.com/'
         self.header = DEFAULT_REQUEST_HEADERS
 
+    def fake_results(self):
+        item_list = []
+        for i in range(10):
+            item = dict()
+            item['search_type'] = 'g'
+            item['keyword'] = 'keyword'
+            item['page_num'] = 0
+
+            item['title'] = '这是标题_{}'.format(i)
+            item['source'] = 'source_{}'.format(i)
+            item['des'] = '<div><span>这是详情<em>{}<em></span></div>'.format(i)
+
+            item_list.append(item)
+        return item_list
+
     def start_requests(self, keyword, pn=0):
         data = {
             'success': False,
@@ -23,7 +38,7 @@ class GoogleSpider:
 
         if not keyword:
             # 当关键字为空时，直接失败
-            return json.dumps(data)
+            return data
 
         url = 'https://www.google.com/search?q={}&start={}0'.format(
             keyword, pn
@@ -35,10 +50,12 @@ class GoogleSpider:
 
         selector = etree.HTML(str(res.content, 'utf-8'))
         results = selector.xpath('//div[@class="rc"]')
-        item_list = []
 
         if not results:
-            return json.dumps(data)
+            return data
+
+        item_list = []
+        # item_list = self.fake_results()
 
         for result in results:
             res_str = etree.tostring(result)
@@ -51,13 +68,19 @@ class GoogleSpider:
             item['search_type'] = 'g'
             item['keyword'] = keyword
             item['page_num'] = pn
-            item['title'] = title if title else ''
-            item['source'] = source if source else ''
-            item['des'] = etree.tostring(des).decode(encoding='utf-8') if des else ''
+
+            # Element, ElementUnicodeResult 对象 转utf-8 字符串
+            title_str = str(title)
+            source_str = str(source)
+            des_str = etree.tostring(des, encoding='utf-8').decode(encoding='utf-8')
+
+            item['title'] = title_str if title_str else ''
+            item['source'] = source_str if source_str else ''
+            item['des'] = des_str if des_str else ''
 
             item_list.append(item)
 
         data['success'] = True
         data['data'] = item_list
 
-        return json.dumps(data)
+        return data
