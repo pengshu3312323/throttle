@@ -56,7 +56,7 @@ class SearchServer(RabbitMQBase):
             properties=pika.BasicProperties(
                 correlation_id=properties.correlation_id
                 ),
-            body=str(res)
+            body=json.dumps(res)
             )
         # 消息确认
         ch.basic_ack(delivery_tag=method.delivery_tag)
@@ -73,7 +73,7 @@ class SearchServer(RabbitMQBase):
 
     @cache_control(100)
     def spider_start(self, keyword, pn):
-        # 返回 爬取结果，json格式
+        # 返回 爬取结果，dict
         s = GoogleSpider()
         return s.start_requests(keyword, pn)
 

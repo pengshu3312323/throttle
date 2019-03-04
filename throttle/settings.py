@@ -16,14 +16,14 @@ DEFAULT_REQUEST_HEADERS = {
 if DEBUG:
     RABBITMQ = {
         'host': 'host',
-        'port': 1234,
+        'port': 5672,
         'username': 'username',
         'password': 'password'
     }
 else:
     RABBITMQ = {
         'host': 'host',
-        'port': 4321,
+        'port': 5672,
         'username': 'username',
         'password': 'password'
     }
@@ -40,12 +40,12 @@ LOG_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 if DEBUG:
     REDIS = {
       'host': 'host',
-      'port': 1234,
+      'port': 6879,
       'password': 'password',
     }
 else:
     REDIS = {
         'host': 'host',
-        'port': 1234,
+        'port': 6879,
         'password': 'password',
     }
