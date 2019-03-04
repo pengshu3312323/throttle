@@ -64,7 +64,7 @@ class SearchClient(RabbitMQBase):
             if wait_time > RABBITMQ_RESPONSE_TIMEOUT:
                 print('Response timeout')
                 return 0
-        print('Received response : {}'.format(self.response))
+        # print('Received response : {}'.format(self.response))
         return self.response
 
     def build_msg(self, keyword, pn):
@@ -79,7 +79,8 @@ class SearchClient(RabbitMQBase):
         # 响应处理
         if self.corr_id == properties.correlation_id:
             # 响应匹配
-            self.response = str(body)
+            res = body.decode(encoding='utf-8')
+            self.response = json.loads(res)
 
     def close(self):
         self.connection.close()
